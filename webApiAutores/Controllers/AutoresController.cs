@@ -24,7 +24,7 @@ namespace webApiAutores.Controllers
         }
 
         [HttpGet("first")]
-        public async Task<ActionResult<Autor>> GetFirstAturo([FromHeader] int mivalor)
+        public async Task<ActionResult<Autor>> GetFirstAturo([FromHeader] int mivalor, [FromQuery] string nombre)
         {
             return await context.Autores.FirstOrDefaultAsync();
         }
@@ -57,7 +57,7 @@ namespace webApiAutores.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult> Post([FromBody]Autor autor, [FromQuery] string nombre)
+        public async Task<ActionResult> Post([FromBody]Autor autor)
         {
             context.Autores.Add(autor);
             await context.SaveChangesAsync();
