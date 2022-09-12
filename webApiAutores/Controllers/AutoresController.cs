@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using webApiAutores.Dtos;
 using webApiAutores.Entidades;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace webApiAutores.Controllers
 {
@@ -21,6 +22,8 @@ namespace webApiAutores.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 10)]
+        //[Authorize]
    
         public async Task<List<AutorDto>> Get()
         {

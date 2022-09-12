@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using webApiAutores.Middlewares;
 
@@ -20,8 +21,13 @@ namespace webApiAutores
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
 
+            services.AddResponseCaching();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+
 
             services.AddAutoMapper(typeof(Startup));
 
@@ -50,6 +56,7 @@ namespace webApiAutores
             app.UseHttpsRedirection();
             
             app.UseRouting();
+            app.UseResponseCaching();
 
             app.UseAuthorization();
 
