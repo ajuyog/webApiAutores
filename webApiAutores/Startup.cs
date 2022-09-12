@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using webApiAutores.Middlewares;
 
 namespace webApiAutores
 {
@@ -18,14 +19,28 @@ namespace webApiAutores
             x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
-            
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-        } 
+            services.AddAutoMapper(typeof(Startup));
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            app.UseLoguearRespuestaHTTP();
+
+            app.Map("/ruta1", app =>
+            {
+                app.Run(async context =>
+                {
+                    await context.Response.WriteAsJsonAsync("Intercepción");
+                });
+
+            });
+
+
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
