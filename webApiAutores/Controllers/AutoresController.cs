@@ -5,6 +5,7 @@ using webApiAutores.Dtos;
 using webApiAutores.Entidades;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using webApiAutores.Filtros;
 
 namespace webApiAutores.Controllers
 {
@@ -22,11 +23,13 @@ namespace webApiAutores.Controllers
         }
 
         [HttpGet]
-        [ResponseCache(Duration = 10)]
+        //[ResponseCache(Duration = 10)]
         //[Authorize]
+        [ServiceFilter(typeof(MiFiltroDeAccion))]
    
         public async Task<List<AutorDto>> Get()
         {
+            throw new NotImplementedException();
             var autores = await context.Autores.ToListAsync();
             return mapper.Map<List<AutorDto>>(autores);
         }

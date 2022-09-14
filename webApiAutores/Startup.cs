@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using webApiAutores.Filtros;
 using webApiAutores.Middlewares;
 
 namespace webApiAutores
@@ -16,10 +17,15 @@ namespace webApiAutores
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddJsonOptions(x =>
+            services.AddControllers(opciones =>
+            {
+                opciones.Filters.Add(typeof(FiltroDeExcepcion));
+            }).AddJsonOptions(x =>
             x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+
+            services.AddTransient<MiFiltroDeAccion>();
 
             services.AddResponseCaching();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
