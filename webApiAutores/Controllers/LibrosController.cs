@@ -29,12 +29,6 @@ namespace webApiAutores.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(LibroCreacionDto libroCreacionDto)
         {
-            //var existe = await context.Autores.AnyAsync(x => x.Id == libro.AutorId);
-
-            //if (!existe)
-            //{
-            //    return BadRequest($"El Autor id: {libro.AutorId}");
-            //}
 
             var libro = mapper.Map<Libro>(libroCreacionDto);
 

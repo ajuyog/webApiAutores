@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using webApiAutores.Filtros;
 using webApiAutores.Middlewares;
 
+
 namespace webApiAutores
 {
     public class Startup
@@ -25,10 +26,7 @@ namespace webApiAutores
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
 
-            services.AddTransient<MiFiltroDeAccion>();
-
-            services.AddResponseCaching();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+            
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
@@ -43,16 +41,7 @@ namespace webApiAutores
         {
             app.UseLoguearRespuestaHTTP();
 
-            app.Map("/ruta1", app =>
-            {
-                app.Run(async context =>
-                {
-                    await context.Response.WriteAsJsonAsync("Intercepción");
-                });
-
-            });
-
-
+   
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
@@ -62,7 +51,7 @@ namespace webApiAutores
             app.UseHttpsRedirection();
             
             app.UseRouting();
-            app.UseResponseCaching();
+            
 
             app.UseAuthorization();
 
