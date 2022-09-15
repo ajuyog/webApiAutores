@@ -8,8 +8,8 @@ namespace webApiAutores.Entidades
         public int id { get; set; }
         [Required]
         [PrimeraLetraMayuscula]
+        [StringLength(maximumLength: 250)]
         public string Titulo { get; set; }
         
-   
     }
 }
