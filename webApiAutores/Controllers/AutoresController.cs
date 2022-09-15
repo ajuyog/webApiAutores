@@ -70,7 +70,8 @@ namespace webApiAutores.Controllers
 
             context.Autores.Add(autor);
             await context.SaveChangesAsync();
-            return Ok();
+            return Ok(); 
+
         }
 
         [HttpPut("{id:int}")]
