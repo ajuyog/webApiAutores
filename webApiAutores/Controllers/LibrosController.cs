@@ -19,7 +19,7 @@ namespace webApiAutores.Controllers
             this.mapper = mapper;
         }
         
-        [HttpGet("{id:int}", Name = "ListaAutoresId")]
+        [HttpGet("{id:int}", Name = "obtenerLibro")]
         public async Task<ActionResult<LibroDtoConAutores>> Get(int id)
         {
             var libro = await context.Libros
@@ -63,7 +63,7 @@ namespace webApiAutores.Controllers
 
             var libroDto  = mapper.Map<LibroDto>(libro);
 
-            return CreatedAtRoute("ListaAutoresId", new { id = libro.id }, libroDto);
+            return CreatedAtRoute("obtenerLibro", new { id = libro.id }, libroDto);
 
         }
     }
