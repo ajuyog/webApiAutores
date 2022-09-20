@@ -82,22 +82,21 @@ namespace webApiAutores.Controllers
 
         [HttpPut("{id:int}")]
 
-        public async Task<ActionResult> Put(Autor autor, int id)
+        public async Task<ActionResult> Put(AutorCreacionDto autorCreacionDto, int id)
         {
-            if (autor.Id != id)
-            {
-                return BadRequest("El Registro no existe");
-            }
-
+            
             var existe = await context.Autores.AnyAsync(x => x.Id == id);
             if (!existe)
             {
                 return NotFound();
             }
 
+            var autor = mapper.Map<Autor>(autorCreacionDto);
+            autor.Id = id;
+
             context.Autores.Update(autor);
             await context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
 
         }
 
