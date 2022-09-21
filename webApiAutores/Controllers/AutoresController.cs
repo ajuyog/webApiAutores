@@ -22,6 +22,8 @@ namespace webApiAutores.Controllers
             this.mapper = mapper;
         }
 
+
+
         [HttpGet]
    
         public async Task<List<AutorDto>> Get()
@@ -110,7 +112,7 @@ namespace webApiAutores.Controllers
                 return NotFound();
             }
 
-            context.Remove(new Autor { Id = id });
+            context.Remove(new Autor() { Id = id });
             await context.SaveChangesAsync();
             return Ok();
         }

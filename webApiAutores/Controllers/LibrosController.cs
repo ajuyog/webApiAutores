@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using webApiAutores.Dtos;
@@ -26,6 +27,12 @@ namespace webApiAutores.Controllers
                 .Include(libroDB => libroDB.AutoresLibros)
                 .ThenInclude(autorLibroDB => autorLibroDB.Autor)
                 .FirstOrDefaultAsync(x=> x.id == id);
+
+            if (libro == null)
+            {
+                return NotFound();
+            }
+
 
             libro.AutoresLibros = libro.AutoresLibros.OrderBy(x=>x.Orden).ToList();
 
@@ -88,6 +95,52 @@ namespace webApiAutores.Controllers
 
                 }
             }
+        }
+
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult> Patch(int id, JsonPatchDocument<LibroPatchDto> patchDocument)
+        {
+            if(patchDocument == null)
+            {
+                return BadRequest();
+            }
+
+            var libroDB = await context.Libros.FirstOrDefaultAsync(x => x.id == id);
+
+            if (libroDB == null)
+            {
+                return NotFound();
+            }
+
+            var libroDto = mapper.Map<LibroPatchDto>(libroDB);
+
+            patchDocument.ApplyTo(libroDto, ModelState);
+
+            var esValido = TryValidateModel(libroDB);
+
+            if (!esValido)
+            {
+                return BadRequest(ModelState);
+            }
+
+            mapper.Map(libroDto, libroDB);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var existe = await context.Libros.AnyAsync(x => x.id == id);
+
+            if (!existe)
+            {
+                return NotFound();
+            }
+
+            context.Libros.Remove(new Libro() { id = id });
+            await context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }
