@@ -6,6 +6,7 @@ using webApiAutores.Entidades;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using webApiAutores.Filtros;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace webApiAutores.Controllers
 {
@@ -15,17 +16,18 @@ namespace webApiAutores.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly IConfiguration configuration;
 
-        public AutoresController(ApplicationDbContext context, IMapper mapper )
+        public AutoresController(ApplicationDbContext context, IMapper mapper, IConfiguration configuration )
         {
             this.context = context;
             this.mapper = mapper;
+            this.configuration = configuration;
         }
 
 
-
         [HttpGet]
-   
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<List<AutorDto>> Get()
         {
             
