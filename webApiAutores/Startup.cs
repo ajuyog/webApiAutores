@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using webApiAutores.Filtros;
 using webApiAutores.Middlewares;
-
+using webApiAutores.Servicios;
 
 namespace webApiAutores
 {
@@ -82,6 +82,22 @@ namespace webApiAutores
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+
+            services.AddAuthorization(opciones =>
+            {
+                opciones.AddPolicy("EsAdmin", politica => politica.RequireClaim("esAdmin"));
+            });
+
+            services.AddDataProtection();
+            services.AddTransient<HashService>();
+
+            services.AddCors(opciones =>
+            {
+                opciones.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("https://apirequest.io").AllowAnyMethod().AllowAnyHeader();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
@@ -98,7 +114,8 @@ namespace webApiAutores
             app.UseHttpsRedirection();
             
             app.UseRouting();
-            
+
+            app.UseCors();
 
             app.UseAuthorization();
 
