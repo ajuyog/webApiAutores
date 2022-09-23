@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using webApiAutores.Dtos;
 
-namespace webApiAutores.Controllers
+namespace webApiAutores.Controllers.V1
 {
     [ApiController]
-    [Route("api")]
+    [Route("api/v1")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RootController: ControllerBase
     {
