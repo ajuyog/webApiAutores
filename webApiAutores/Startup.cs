@@ -55,6 +55,7 @@ namespace webApiAutores
                 c.SwaggerDoc("v2", new OpenApiInfo { Title = "WebAPIAutores", Version = "v2" });
 
                 c.OperationFilter<AgregarParametroHATEOAS>();
+                c.OperationFilter<AgregarParametroXVersion>();
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -104,7 +105,8 @@ namespace webApiAutores
             {
                 opciones.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins("https://apirequest.io").AllowAnyMethod().AllowAnyHeader();
+                    builder.WithOrigins("https://apirequest.io").AllowAnyMethod().AllowAnyHeader()
+                    .WithExposedHeaders(new string[] { "CantidadTotalRegistros" });
                 });
             });
 

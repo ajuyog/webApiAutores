@@ -12,7 +12,9 @@ using webApiAutores.Utilidades;
 namespace webApiAutores.Controllers.V1
 {
     [ApiController]
-    [Route("api/v1/autores")]
+    //[Route("api/v1/autores")]
+    [Route("api/autores")]
+    [CabeceraPresente("x-version","1")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy ="EsAdmin")]
 
     public class AutoresController : ControllerBase
@@ -32,10 +34,12 @@ namespace webApiAutores.Controllers.V1
         [HttpGet(Name ="obtenerAutoresv1")]
         [AllowAnonymous]
         [ServiceFilter(typeof(HATEOASAutorFilterAttribute))]
-        public async Task<ActionResult<List<AutorDto>>> Get()
+        public async Task<ActionResult<List<AutorDto>>> Get([FromQuery] PaginacionDto paginacionDto)
         {
+            var queryable = context.Autores.AsQueryable();
+            await HttpContext.InsertarParametrosDePaginacionEnCabecera(queryable);
             
-            var autores = await context.Autores.ToListAsync();
+            var autores = await queryable.OrderBy(autor => autor.Nombre).Paginar(paginacionDto).ToListAsync();
             return mapper.Map<List<AutorDto>>(autores);
         }
 

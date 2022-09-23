@@ -12,7 +12,9 @@ using webApiAutores.Utilidades;
 namespace webApiAutores.Controllers.V2
 {
     [ApiController]
-    [Route("api/v2/autores")]
+    //[Route("api/v2/autores")]
+    [Route("api/autores")]
+    [CabeceraPresente("x-version", "2")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy ="EsAdmin")]
 
     public class AutoresController : ControllerBase
